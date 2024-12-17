@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.MatKhau)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaKh">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaKh">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaKh">Delete</a>
+                <a Class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.MaKh">Sửa</a> |
+                <a Class="btn btn-outline-primary " asp-action="Details" asp-route-id="@item.MaKh">Thông Tin</a> |
+                <a Class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.MaKh">xóa</a>
             </td>
         </tr>
 }

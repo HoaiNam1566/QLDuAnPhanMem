@@ -14,6 +14,7 @@ public partial class Danhmuc
     public int MaDm { get; set; }
 
     [StringLength(100)]
+    [Display(Name = "Danh Mục")]
     public string Ten { get; set; } = null!;
 
     [InverseProperty("MaDmNavigation")]

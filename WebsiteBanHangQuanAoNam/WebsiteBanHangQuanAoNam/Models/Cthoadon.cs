@@ -18,11 +18,11 @@ public partial class Cthoadon
 
     [Column("MaMH")]
     public int MaMh { get; set; }
-
+    [Display(Name = "Đơn Giá")]
     public int? DonGia { get; set; }
-
+    [Display(Name = "Số Lượng")]
     public short? SoLuong { get; set; }
-
+    [Display(Name = "Thành Tiền")]
     public int? ThanhTien { get; set; }
 
     [ForeignKey("MaHd")]

@@ -1,83 +1,62 @@
 ﻿@model IEnumerable<WebsiteBanHangQuanAoNam.Models.Mathang>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
+<div class="px-4 px-lg-5 mt-1">
+	<h3 class="text-black">Tất cả sản phẩm</h3>
+	<div />
+	<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+		@foreach (var item in Model)
+		{
+			<div class="col mb-5">
+				<div class="card h-100">
+					<!-- Sale badge-->
+					<div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Giảm giá</div>
+					<!-- Product image-->
+					<a asp-action="Details" asp-route-id="@item.MaMh" class="text-decoration-none">
+						<img class="card-img-top" src="images/products/@item.HinhAnh" alt="..." />
+					</a>
+					<!-- Product details-->
+					<div class="card-body p-4">
+						<div class="text-center">
+							<!-- Product name-->
+							<h5 class="fw-bolder text-black">@Html.DisplayFor(mbox => item.Ten)</h5>
+							<!-- Product reviews-->
+							<div class="d-flex justify-content-center small text-warning mb-2">
+								<div class="bi-star-fill"></div>
+								<div class="bi-star-fill"></div>
+								<div class="bi-star-fill"></div>
+								<div class="bi-star-fill"></div>
+								<div class="bi-star"></div>
+							</div>
+							<!-- Product price-->
+							<span class="text-muted text-decoration-line-through">@Html.DisplayFor(mbox => item.GiaGoc)</span>
+							<span class="text-danger fw-bolder">@Html.DisplayFor(mbox => item.GiaBan)</span>
+						</div>
+					</div>
+					<!-- Product actions-->
+					<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+						<div class="text-center">
+							<form asp-controller="Cusomer" asp-action="themSanPhamVaoGioHang" method="post">
+								<input type="hidden" name="id" value="@item.MaMh" />
+								<input type="hidden" name="soLuong" value="1" />  <!-- Mặc định số lượng = 1 -->
+								<input type="hidden" name="loai" value="1" />
+								<button type="submit" class="btn btn-outline-info mt-auto">Chọn mua</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
 
-<h1>Index</h1>
+	@* thanh so thu tu *@
+	<ul class="pagination justify-content-center" style="margin:20px 0">
+		<li class="page-item"><a class="page-link" href="#"><i class="bi bi-caret-left-fill"></i></a></li>
+		<li class="page-item"><a class="page-link" href="#">1</a></li>
+		<li class="page-item"><a class="page-link" href="#">2</a></li>
+		<li class="page-item"><a class="page-link" href="#">3</a></li>
+		<li class="page-item"><a class="page-link" href="#"><i class="bi bi-caret-right-fill"></i></a></li>
+	</ul>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Ten)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GiaGoc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GiaBan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoLuong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MoTa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HinhAnh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LuotXem)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LuotMua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaDmNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ten)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaGoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaBan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoLuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HinhAnh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LuotXem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LuotMua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaDmNavigation.MaDm)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaMh">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaMh">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaMh">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

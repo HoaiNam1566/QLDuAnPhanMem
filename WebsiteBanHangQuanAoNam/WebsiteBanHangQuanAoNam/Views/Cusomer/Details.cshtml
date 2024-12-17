@@ -1,72 +1,134 @@
 ﻿@model WebsiteBanHangQuanAoNam.Models.Mathang
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style>
+	/* Căn giữa alert */
+	.alert {
+		position: fixed;
+		bottom: 20px;
+		z-index: 1050;
+		display: flex;
+		flex-direction: column; /* Biểu tượng ở trên, thông báo ở dưới */
+		justify-content: center;
+		align-items: center;
+		width: 350px;
+	}
 
-<div>
-    <h4>Mathang</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ten)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ten)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GiaGoc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GiaGoc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GiaBan)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GiaBan)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoLuong)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoLuong)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HinhAnh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HinhAnh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LuotXem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LuotXem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LuotMua)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LuotMua)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaDmNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaDmNavigation.MaDm)
-        </dd>
-    </dl>
+		/* Căn giữa biểu tượng ở trên */
+		.alert svg {
+			margin: 15px; /* Khoảng cách giữa icon và nội dung */
+		}
+</style>
+
+<script>
+	window.addEventListener('DOMContentLoaded', (event) => {
+		const successAlert = document.querySelector('.alert');
+		if (successAlert) {
+			// Thêm lớp "show" để hiển thị alert
+			successAlert.classList.add('show');
+
+			// Tự động ẩn alert sau 3 giây
+			setTimeout(() => {
+				successAlert.classList.remove('show');  // Loại bỏ lớp "show"
+				successAlert.classList.add('fade');  // Thêm lớp "fade" để làm mờ alert
+			}, 1500);
+		}
+	});
+
+</script>
+
+@if (TempData["SuccessMessage"] != null)
+{
+	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+		<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+			<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+		</symbol>
+	</svg>
+	<div class="alert alert-success position-fixed bottom-0 end-0 p-3">
+		<svg class="bi flex-shrink-0 me-2 align-content-center" width="60" height="60" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+		<div>
+			@TempData["SuccessMessage"]
+		</div>
+
+	</div>
+}
+
+
+
+<!-- Popper.js (required for Bootstrap 5 tooltips, dropdowns, etc.) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<div class="container mt-4">
+	<div>
+		<a asp-action="Index" asp-controller="Home" class="text-dark">Trang chủ</a> /
+		<a asp-action="Index" asp-controller="Cusomer" class="text-dark">Sản phẩm</a> /
+		<a asp-action="laySPThuocDM" asp-controller="Cusomer" asp-route-id="@Model.MaDm" class="text-dark">@Html.DisplayFor(model => model.MaDmNavigation.Ten)</a> /
+		<span class="text-muted font-weight-bold">@Html.DisplayFor(model => model.Ten)</span>
+		<br />
+	</div>
+
+	<h1>Chi tiết</h1>
+	<div class="row">
+		<!-- Ảnh sản phẩm -->
+		<div class="col-md-6">
+			<img src="~/images/products/@Model.HinhAnh" class="img-fluid rounded shadow border border-1 border-secondary" alt="@Model.Ten" width="550" />
+		</div>
+
+		<!-- Thông tin sản phẩm -->
+		<div class="col-md-6">
+			<h1 class="fw-bold">@Model.Ten</h1>
+			<p>
+				<b>Giá: </b>
+				<b class="text-danger fs-3">@Html.DisplayFor(model => model.GiaBan) </b>&nbsp;
+				<span class="text-muted text-decoration-line-through">@Html.DisplayFor(model => model.GiaGoc)</span>
+			</p>
+
+			<p>
+				<b>Mô tả:</b>
+				<br>
+				@Model.MoTa
+			</p>
+			<p><b>Lượt xem:</b> @Model.LuotXem</p>
+
+			<!-- Chọn số lượng và các nút -->
+			<div class="mb-3">
+				<label for="soLuong" class="form-label">Số lượng:</label>
+				<input type="number" id="soLuong" name="soLuong" class="form-control" value="1" min="1" max="100" required />
+			</div>
+
+			<!-- Các nút nằm ngang -->
+			<div class="d-flex justify-content-start gap-2">
+				<!-- Form Thêm vào giỏ hàng -->
+				<form asp-action="themSanPhamVaoGioHang" method="post">
+					<input type="hidden" name="id" value="@Model.MaMh" />
+					<input type="hidden" id="loai" name="loai" value="0" />
+					<button type="submit" class="btn btn-outline-success">
+						<i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
+					</button>
+				</form>
+
+				<!-- Form Mua ngay -->
+				<form asp-action="ThemSanPhamVaoGioHang" method="post">
+					<input type="hidden" name="id" value="@Model.MaMh" />
+					<input type="hidden" name="soLuong" value="1" />
+					<input type="hidden" name="loai" value="1" />
+					<button type="submit" class="btn btn-success">
+						<i class=""></i> Mua ngay
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaMh">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+	<br />
+	<a asp-action="Index">Tiết tục xem sản phẩm</a>
 </div>

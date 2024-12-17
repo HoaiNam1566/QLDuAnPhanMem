@@ -48,7 +48,7 @@ namespace WebsiteBanHangQuanAoNam.Controllers
         // GET: Mathangs/Create
         public IActionResult Create()
         {
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm");
+            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "Ten");
             return View();
         }
 

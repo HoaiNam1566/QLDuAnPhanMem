@@ -1,4 +1,4 @@
-﻿namespace ShopVanPhongPham.Models
+﻿namespace WebsiteBanHangQuanAoNam.Models
 {
     public class GioHang
     {

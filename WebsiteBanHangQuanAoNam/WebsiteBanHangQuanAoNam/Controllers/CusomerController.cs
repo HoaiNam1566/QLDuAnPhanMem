@@ -13,17 +13,109 @@ namespace WebsiteBanHangQuanAoNam.Controllers
     public class CusomerController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPasswordHasher<Khachhang> _passwordHasher;
 
-        public CusomerController(ApplicationDbContext context)
+        public CusomerController(ApplicationDbContext context, IPasswordHasher<Khachhang> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
+
         }
+
+        public void GetData()
+        {
+            ViewData["SoLuong"] = LayGioHang().Count;
+            ViewBag.danhmuc = _context.Danhmucs.ToList();
+
+            if (HttpContext.Session.GetString("khachhang") != "")
+            {
+                ViewBag.khachHang = _context.Khachhangs.FirstOrDefault(k => k.Email == HttpContext.Session.GetString("khachhang"));
+            }
+
+        }
+        public IActionResult dangNhap()
+        {
+            GetData();
+            return View();
+        }
+
+        public IActionResult dangXuat()
+        {
+            HttpContext.Session.SetString("khachhang", "");
+            GetData();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult>dangNhap(string email, string matKhau)
+        {
+            var khachHang = await _context.Khachhangs
+                .FirstOrDefaultAsync(m=>m.Email == email);
+            if(khachHang != null && _passwordHasher.VerifyHashedPassword(khachHang, khachHang.MatKhau, matKhau) == PasswordVerificationResult.Success)
+            {
+                HttpContext.Session.SetString("khachhang",khachHang.Email);
+                return RedirectToAction(nameof(hoSoKhachHang));
+            }
+            return RedirectToAction(nameof(dangNhap));
+        }
+
+        public IActionResult hoSoKhachHang()
+        {
+            GetData();
+            return View();
+        }
+
+        public IActionResult dangKy()
+        {
+            GetData();
+            return View();
+        }
+
+        public IActionResult dangNhapThatBai()
+        {
+            GetData();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> dangKy(string hoten, string dienthoai, string email, string matkhau)
+        {
+            Khachhang kh = new Khachhang();
+            kh.Ten = hoten;
+            kh.DienThoai = dienthoai;
+            kh.Email = email;
+            kh.MatKhau = _passwordHasher.HashPassword(kh, matkhau); // mã hóa mật khẩu
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(kh);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(dangNhap));
+
+            }
+            else
+            {
+                return RedirectToAction(nameof(dangNhapThatBai));
+            }
+        }
+
 
         // GET: Cusomer
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Mathangs.Include(m => m.MaDmNavigation);
+            GetData();
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> laySPThuocDM(int id)
+        {
+            var MatHang = _context.Mathangs
+            .Where(m => m.MaDm == id)
+            .Include(m => m.MaDmNavigation);
+            ViewBag.tendanhmuc = _context.Danhmucs.FirstOrDefault(d => d.MaDm == id).Ten;
+            GetData();
+            return View(await MatHang.ToArrayAsync());
         }
 
         // GET: Cusomer/Details/5
@@ -41,124 +133,160 @@ namespace WebsiteBanHangQuanAoNam.Controllers
             {
                 return NotFound();
             }
-
+            GetData();
             return View(mathang);
         }
+     
 
-        // GET: Cusomer/Create
-        public IActionResult Create()
+        // Doc danh sach gio hang tu session
+        public List<GioHang> LayGioHang()
         {
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm");
-            return View();
+            var session = HttpContext.Session;
+            string? jsonGioHang = session.GetString("shopcart");
+            if (jsonGioHang != null)
+            {
+                var gioHangItems = JsonConvert.DeserializeObject<List<GioHang>>(jsonGioHang);
+                return gioHangItems ?? new List<GioHang>();
+            }
+            return new List<GioHang>();
         }
 
-        // POST: Cusomer/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaMh,Ten,GiaGoc,GiaBan,SoLuong,MoTa,HinhAnh,MaDm,LuotXem,LuotMua")] Mathang mathang)
+        // luu danh sach cac thanh phan trong gio hang vao session
+        public void luuGioHangVaoSession(List<GioHang> list)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(mathang);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm", mathang.MaDm);
-            return View(mathang);
+            var session = HttpContext.Session;
+            string jsonGioHang = JsonConvert.SerializeObject(list);
+            session.SetString("shopcart", jsonGioHang);
         }
 
-        // GET: Cusomer/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // xoa session gio hang
+        public void xoaGioHang()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var mathang = await _context.Mathangs.FindAsync(id);
-            if (mathang == null)
-            {
-                return NotFound();
-            }
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm", mathang.MaDm);
-            return View(mathang);
+            var session = HttpContext.Session;
+            session.Remove("shopcart");
         }
 
-        // POST: Cusomer/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaMh,Ten,GiaGoc,GiaBan,SoLuong,MoTa,HinhAnh,MaDm,LuotXem,LuotMua")] Mathang mathang)
+        // them mon hang vao gio hang
+        public async Task<IActionResult> themSanPhamVaoGioHang(int id)
         {
-            if (id != mathang.MaMh)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(mathang);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MathangExists(mathang.MaMh))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm", mathang.MaDm);
-            return View(mathang);
-        }
-
-        // GET: Cusomer/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var mathang = await _context.Mathangs
-                .Include(m => m.MaDmNavigation)
                 .FirstOrDefaultAsync(m => m.MaMh == id);
             if (mathang == null)
             {
-                return NotFound();
+                return NotFound("Sản phẩm không tồn tại");
             }
-
-            return View(mathang);
-        }
-
-        // POST: Cusomer/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var mathang = await _context.Mathangs.FindAsync(id);
-            if (mathang != null)
+            var cart = LayGioHang();
+            var item = cart.Find(p => p.MatHang.MaMh == id);
+            if (item != null)
             {
-                _context.Mathangs.Remove(mathang);
+                item.SoLuong++;
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                cart.Add(new GioHang() { MatHang = mathang, SoLuong = 1 });
+            }
+            luuGioHangVaoSession(cart);
+            GetData();
+            return RedirectToAction(nameof(ViewCart));
         }
 
-        private bool MathangExists(int id)
+        // chuyen den trang gio hang
+        public IActionResult ViewCart()
         {
-            return _context.Mathangs.Any(e => e.MaMh == id);
+            GetData();
+            return View(LayGioHang());
         }
+
+        // xoa mat hang trong gio
+        public IActionResult xoaMatHangTrongGio(int id)
+        {
+            var cart = LayGioHang();
+            var item = cart.Find(p => p.MatHang.MaMh == id);
+            if (item != null)
+            {
+                cart.Remove(item);
+            }
+            luuGioHangVaoSession(cart);
+            GetData();
+            return RedirectToAction(nameof(ViewCart));
+        }
+
+        // Cập nhật số lượng một mặt hàng trong giỏ 
+        public IActionResult capNhatGioHang(int id, int soLuong)
+        {
+            var cart = LayGioHang();
+            var item = cart.Find(m => m.MatHang.MaMh == id);
+            if (item != null)
+            {
+                item.SoLuong = soLuong;
+            }
+            luuGioHangVaoSession(cart);
+            GetData();
+            return RedirectToAction(nameof(ViewCart));
+
+        }
+
+        // ham lay tat ca mat hang co trong gio
+        public int soLuongMatHang()
+        {
+            var cart = LayGioHang();
+            return cart.Sum(i => i.SoLuong);
+        }
+
+        public IActionResult CheckOut()
+        {
+            GetData();
+            return View(LayGioHang());
+        }
+
+        [HttpPost, ActionName("CreateBill")]
+        public async Task<IActionResult> CreateBill(string email, string hoten, string dienthoai, string diachi)
+        {
+            // Xử lý thông tin khách hàng (trường hợp khách mới)
+            var kh = new Khachhang();
+            kh.Email = email;
+            kh.Ten = hoten;
+            kh.DienThoai = dienthoai;
+            _context.Add(kh);
+            await _context.SaveChangesAsync();
+
+            var hd = new Hoadon();
+            hd.Ngay = DateTime.Now;
+            hd.MaKh = kh.MaKh;
+
+            _context.Add(hd);
+            await _context.SaveChangesAsync();
+
+            // thêm chi tiết hóa đơn
+            var cart = LayGioHang();
+
+            int thanhtien = 0;
+            int tongtien = 0;
+            foreach (var i in cart)
+            {
+                var ct = new Cthoadon();
+                ct.MaHd = hd.MaHd;
+                ct.MaMh = i.MatHang.MaMh;
+                thanhtien = i.MatHang.GiaBan * i.SoLuong ?? 1;
+                tongtien += thanhtien;
+                ct.DonGia = i.MatHang.GiaBan;
+                ct.SoLuong = (short)i.SoLuong;
+                ct.ThanhTien = thanhtien;
+                _context.Add(ct);
+            }
+            await _context.SaveChangesAsync();
+
+            // cập nhật tổng tiền hóa đơn
+            hd.TongTien = tongtien;
+            _context.Update(hd);
+            await _context.SaveChangesAsync();
+
+            // xóa giỏ hàng
+            xoaGioHang();
+            GetData();
+            return View(hd);
+        }
+
+
     }
 }

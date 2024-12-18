@@ -73,9 +73,10 @@
                 @Html.DisplayFor(modelItem => item.MaDmNavigation.MaDm)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaMh">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaMh">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaMh">Delete</a>
+          
+                    <a Class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.MaMh">Sửa</a> |
+                    <a Class="btn btn-outline-primary " asp-action="Details" asp-route-id="@item.MaMh">Thông Tin</a> |
+                    <a Class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.MaMh">xóa</a>
             </td>
         </tr>
 }

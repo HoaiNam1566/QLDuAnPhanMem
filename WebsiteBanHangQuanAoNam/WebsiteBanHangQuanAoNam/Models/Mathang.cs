@@ -17,10 +17,13 @@ public partial class Mathang
     [StringLength(100)]
     public string Ten { get; set; } = null!;
 
-    public int? GiaGoc { get; set; }
+	[Display(Name = "Giá gốc")]
+	[DisplayFormat(DataFormatString = "{0:#,0}₫")]
+	public int? GiaGoc { get; set; }
 
     [Display(Name = "Giá bán")]
-    public int? GiaBan { get; set; }
+	[DisplayFormat(DataFormatString = "{0:#,0}₫")]
+	public int? GiaBan { get; set; }
 
     [Display(Name = "Số lượng")]
     public short? SoLuong { get; set; }

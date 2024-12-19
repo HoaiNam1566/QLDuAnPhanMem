@@ -34,6 +34,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Mathangs}/{action=Index}/{id?}");
+	pattern: "{controller=Cusomer}/{action=Index}/{id?}");
 
 app.Run();

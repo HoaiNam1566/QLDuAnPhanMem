@@ -48,7 +48,7 @@ namespace WebsiteBanHangQuanAoNam.Controllers
         // GET: Mathangs/Create
         public IActionResult Create()
         {
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm");
+            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "Ten");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace WebsiteBanHangQuanAoNam.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm", mathang.MaDm);
+            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "Ten", mathang.MaDm);
             return View(mathang);
         }
 
@@ -82,7 +82,7 @@ namespace WebsiteBanHangQuanAoNam.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm", mathang.MaDm);
+            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "Ten", mathang.MaDm);
             return View(mathang);
         }
 
@@ -118,7 +118,7 @@ namespace WebsiteBanHangQuanAoNam.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "MaDm", mathang.MaDm);
+            ViewData["MaDm"] = new SelectList(_context.Danhmucs, "MaDm", "Ten", mathang.MaDm);
             return View(mathang);
         }
 

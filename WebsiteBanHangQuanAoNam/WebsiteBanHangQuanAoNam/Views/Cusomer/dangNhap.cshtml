@@ -1,6 +1,62 @@
 ﻿
 @{
+<<<<<<< HEAD
     ViewData["Title"] = "dangNhap";
+=======
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<style>
+	/* Căn giữa alert */
+	.alert {
+		position: fixed;
+		bottom: 20px;
+		z-index: 1050;
+		display: flex;
+		flex-direction: column; /* Biểu tượng ở trên, thông báo ở dưới */
+		justify-content: center;
+		align-items: center;
+		width: 350px;
+	}
+
+		/* Căn giữa biểu tượng ở trên */
+		.alert svg {
+			margin: 15px; /* Khoảng cách giữa icon và nội dung */
+		}
+</style>
+
+<script>
+	window.addEventListener('DOMContentLoaded', (event) => {
+		const successAlert = document.querySelector('.alert');
+		if (successAlert) {
+			// Thêm lớp "show" để hiển thị alert
+			successAlert.classList.add('show');
+
+			// Tự động ẩn alert sau 3 giây
+			setTimeout(() => {
+				successAlert.classList.remove('show');  // Loại bỏ lớp "show"
+				successAlert.classList.add('fade');  // Thêm lớp "fade" để làm mờ alert
+			}, 1500);
+		}
+	});
+
+</script>
+
+@if (TempData["SuccessSignup"] != null)
+{
+	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+		<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+			<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+		</symbol>
+	</svg>
+	<div class="alert alert-success position-fixed bottom-0 end-0 p-3">
+		<svg class="bi flex-shrink-0 me-2 align-content-center" width="60" height="60" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+		<div>
+			@TempData["SuccessSignup"]
+		</div>
+
+	</div>
+>>>>>>> 26d88eb8f67e1ba111b21353b4a5b097661c70d7
 }
 
 <div class="row">
@@ -21,3 +77,7 @@
     <div class="col-sm-4"></div>
 </div>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 26d88eb8f67e1ba111b21353b4a5b097661c70d7

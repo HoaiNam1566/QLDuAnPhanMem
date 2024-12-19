@@ -14,12 +14,12 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" asp-action="Index"> <i class="bi bi-shop-window"></i> HN Shop</a>
+                <a class="navbar-brand" asp-action="Index"> <i class="bi bi-shop-window"></i> HN STORE</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Trang chính</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Giới thiệu</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" asp-action="index">Trang chính</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-action="GioiThieu">Giới thiệu</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Danh mục sản phẩm</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -74,13 +74,13 @@
         <!-- The slideshow/carousel -->
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="~/images/carousel/h1.jpg" alt="Dụng cụ văn phòng" class="d-block w-100">
+                <img src="~/images/banner/h1.jpg" alt="phong cach nam" class="d-block w-100">
             </div>
             <div class="carousel-item">
-                <img src="~/images/carousel/h2.jpg" alt="Dụng cụ học tập" class="d-block w-100">
+                <img src="~/images/banner/h2.jpg" alt="phong cach nam" class="d-block w-100">
             </div>
             <div class="carousel-item">
-                <img src="~/images/carousel/h3.jpg" alt="Văn phòng phẩm" class="d-block w-100">
+                <img src="~/images/banner/h3.jpg" alt="phong cach nam" class="d-block w-100">
             </div>
         </div>
 
@@ -102,7 +102,7 @@
                     <h4>
                         <span class="badge text-white bg-primary">A</span>
                         <span class="badge text-white bg-danger">B</span>
-                        <span class="badge text-white bg-warning">C</span> Shop - Cửa hàng văn phòng phẩm HN
+                        <span class="badge text-white bg-warning">C</span> STORE - Cửa hàng HN STORE chuyên về quần áo nam
                     </h4>
                     <p>
                         <b><i>Địa chỉ:</i></b> 18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang<br>

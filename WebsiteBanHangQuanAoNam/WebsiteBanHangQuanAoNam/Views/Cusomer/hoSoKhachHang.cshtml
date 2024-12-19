@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "hoSoKhachHang";
+}
+
+@if (ViewBag.khachHang != null)
+{
+        <section class="py-5">
+            <div class="container">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <h3 class="mb-4 text-center">Chi Tiết Khách Hàng</h3>
+                        <div class="mb-3">
+                            <strong>Họ tên:</strong>
+                        <span>@ViewBag.khachHang.Ten</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Email:</strong>
+                        <span>@ViewBag.khachHang.Email</span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Số điện thoại:</strong>
+                        <span>@ViewBag.khachHang.DienThoai</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <p><a class="btn btn-success" asp-action="dangXuat">Đăng xuất</a></p>
+}
+else
+{
+    <p>Vui lòng <a asp-action="dangNhap">Đăng nhập</a></p>
+}
+

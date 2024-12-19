@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "CreateBill";
+}
+
+<body>
+    <section class="py-5">
+        <div class="container">
+            <div class="card border-0 shadow">
+                <div class="card-body text-center">
+                    <h3 class="text-success mb-4">Cảm ơn bạn đã đặt hàng!</h3>
+                    <p class="mb-3">Đơn hàng của bạn đã được xác nhận. Chúng tôi sẽ liên hệ để giao hàng trong thời gian sớm nhất.</p>
+                    <div class="mb-4">
+                        <strong>Mã đơn hàng:</strong>
+                        <span class="text-primary fs-5">@Model.MaHd</span>
+                    </div>
+                    <div class="mb-4">
+                        <strong>Giá trị đơn hàng:</strong>
+                        <span class="text-danger fs-5">@(Model.TongTien) VNĐ</span>
+                    </div>
+                    <a asp-action="index" class="btn btn-success" >Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+
+

@@ -242,6 +242,12 @@ namespace WebsiteBanHangQuanAoNam.Controllers
             return View(LayGioHang());
         }
 
+        public IActionResult GioiThieu()
+        {
+            GetData();
+            return View();
+        }
+
         [HttpPost, ActionName("CreateBill")]
         public async Task<IActionResult> CreateBill(string email, string hoten, string dienthoai, string diachi)
         {

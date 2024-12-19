@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>QL Mặt Hàng</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm mặt hàng</a>
 </p>
 <table class="table">
     <thead>
@@ -61,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.MoTa)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HinhAnh)
+                    <img style="max-width:100px" src="~/images/products/@Html.DisplayFor(modelItem => item.HinhAnh)" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LuotXem)
